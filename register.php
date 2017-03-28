@@ -32,8 +32,8 @@ if ($method =='POST') {
         }
       }else { //wrong input
           echo "Not called properly with username parameter!";
-        }
+      }
 
-    }
+  }
 mysqli_close($link);
 ?>

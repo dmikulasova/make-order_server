@@ -2,13 +2,13 @@
 include 'connect.php';
 
 if ($method =='POST') {
-    $input = json_decode(file_get_contents('php://input'),true);
+    $input = file_get_contents('php://input');
     if (isset($input)) {
       $request = json_decode($input);
       $username=$request->username;
       $password=$request->password;
       if ($username != "" && $password!= "") {
-          $sql ='select * from customer where username="'+$username+'" and password="'+$password+'";';
+          $sql ="select * from customer where username='$username' and password='$password';";
 
            // excecute SQL statement
            $result = mysqli_query($link,$sql);
