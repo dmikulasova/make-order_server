@@ -1,22 +1,39 @@
 <?php
-if (isset($_SERVER['HTTP_ORIGIN'])) {
-        header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-        header('Access-Control-Allow-Credentials: true');
-        header('Access-Control-Max-Age: 86400');    // cache for 1 day
+include 'connect.php';
+
+if ($method =='POST') {
+    $input = file_get_contents('php://input');
+    if (isset($input)) {
+      $request = json_decode($input);
+      $firstName = $request->firstName;
+      $surname=$request->surname;
+      $email=$request->email;
+      $creditCard=$request->creditCard;
+      $username=$request->username;
+      $password=$request->password;
+
+
+      if ($firstName != "") {
+          $sql ="insert into customer(firstName, surname, email, creditCard, username, password)
+           VALUES ('$firstName', '$surname','$email', '$creditCard', '$username', '$password');";
+
+           // excecute SQL statement
+           $result = mysqli_query($link,$sql);
+
+           // die if SQL statement failed
+           if (!$result) {
+             http_response_code(404);
+             exit(1);
+           }else{
+             echo "success";
+           }
+        }else { //not first name
+          echo "Empty username parameter!";
+        }
+      }else { //wrong input
+          echo "Not called properly with username parameter!";
+        }
+
     }
-
-
-$method = $_SERVER['REQUEST_METHOD'];
-$input = json_decode(file_get_contents('php://input'),true);
-
-// connect to the mysql database
-$link = mysqli_connect('localhost', 'id1140352_localhost', 'password', 'id1140352_make_order');
-mysqli_set_charset($link,'utf8');
-
-if ($link->connect_errno) {
-    printf ("Connect failed: %s\n", $link->connect_error);
-    exit(1);
-}
-
-
+mysqli_close($link);
 ?>
