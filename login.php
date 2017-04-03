@@ -14,28 +14,33 @@ if ($method =='POST') {
            $result = mysqli_query($link,$sql);
 
            // die if SQL statement failed
-           if (!$result) {
+           if (mysqli_num_rows($result) != 1) {
              $sql ="select * from customer where username='$username';";
-             $result = mysqli_query($link,$sql);
-             if ($result) {
+             $result_user = mysqli_query($link,$sql);
+             if (mysqli_num_rows($result_user)==1) {
                echo "wrong password";
-             }else {
+               header("HTTP/1.0 404 Wrong password");
+             }else{
                echo "user does not exist";
+               header("HTTP/1.0 404 User not found");
              }
-           }else { //everything good
+
+           }else if(mysqli_num_rows($result) == 1) {
+            //everything good
              echo '[';
              // print results, insert id or affected row count
                for ($i=0;$i<mysqli_num_rows($result);$i++) {
                  echo ($i>0?',':'').json_encode(mysqli_fetch_object($result));
                }
-
              echo ']';
            }
 
-        }else if ($username!="") {
+        }else if ($username!="" && $password == "") {
           echo "You must type password";
+          header("HTTP/1.0 404 No password");
         }else {
           echo "You must type username";
+          header("HTTP/1.0 404 No username");
         }
     }
 }
