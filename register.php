@@ -13,7 +13,7 @@ if ($method =='POST') {
       $password=$request->password;
 
 
-      if ($firstName != "") {
+      if ($username != "" && $password != "") {
           $sql ="insert into customer(firstName, surname, email, creditCard, username, password)
            VALUES ('$firstName', '$surname','$email', '$creditCard', '$username', '$password');";
 

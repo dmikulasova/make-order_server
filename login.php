@@ -15,16 +15,27 @@ if ($method =='POST') {
 
            // die if SQL statement failed
            if (!$result) {
-             http_response_code(404);
-             exit(1);
-           }
-           echo '[';
-           // print results, insert id or affected row count
-             for ($i=0;$i<mysqli_num_rows($result);$i++) {
-               echo ($i>0?',':'').json_encode(mysqli_fetch_object($result));
+             $sql ="select * from customer where username='$username';";
+             $result = mysqli_query($link,$sql);
+             if ($result) {
+               echo "wrong password";
+             }else {
+               echo "user does not exist";
              }
+           }else { //everything good
+             echo '[';
+             // print results, insert id or affected row count
+               for ($i=0;$i<mysqli_num_rows($result);$i++) {
+                 echo ($i>0?',':'').json_encode(mysqli_fetch_object($result));
+               }
 
-           echo ']';
+             echo ']';
+           }
+
+        }else if ($username!="") {
+          echo "You must type password";
+        }else {
+          echo "You must type username";
         }
     }
 }
