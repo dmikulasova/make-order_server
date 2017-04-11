@@ -15,4 +15,5 @@ if ($method =='GET') {
      echo ']';
    }
 }
+  mysqli_close($link);
 ?>

@@ -14,6 +14,10 @@ if ($method =='POST') {
            $result = mysqli_query($link,$sql);
 
            // die if SQL statement failed
+           if (!$result) {
+             echo "Database error";
+             header("HTTP/1.0 404 Database error");
+           }
            if (mysqli_num_rows($result) != 1) {
              $sql ="select * from customer where username='$username';";
              $result_user = mysqli_query($link,$sql);
